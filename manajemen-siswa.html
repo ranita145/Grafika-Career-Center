@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Manajemen Siswa — Grafika Career Center (Guru)</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --black:#000000;
+      --white:#ffffff;
+      --cyan:#00B4D8;
+      --blue600:#0077B6;
+      --blue900:#023E8A;
+      --radius:12px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:'PT Sans',system-ui,Arial;
+      background:#ffffff;
+      color:#000000;
+      padding:0;
+    }
+    .header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 20px;
+      background:linear-gradient(90deg,var(--blue900),var(--blue600));
+      color:#fff;
+    }
+    .header-left{display:flex;align-items:center;gap:12px}
+    .logo{font-family:'Bebas Neue';font-size:28px}
+    .search{
+      background:#fff;
+      padding:8px 12px;
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      min-width:260px;
+    }
+    .search input{
+      border:0;
+      outline:none;
+      background:transparent;
+      margin-left:6px;
+    }
+    .header-right{display:flex;align-items:center;gap:12px}
+    .icon-btn{
+      background:transparent;border:0;color:#fff;
+      font-size:20px;cursor:pointer;padding:8px;position:relative;
+    }
+    .menu{position:relative}
+    .menu-content{
+      display:none;
+      position:absolute;right:0;top:45px;
+      background:#fff;color:#000;
+      min-width:220px;padding:8px;
+      border-radius:10px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.12);
+    }
+    .menu-content button{
+      display:block;width:100%;padding:10px;border:0;
+      background:transparent;text-align:left;cursor:pointer;
+      border-radius:8px;
+    }
+    .menu-content button:hover{background:#f2f2f2}
+    main{padding:20px;max-width:1100px;margin:auto}
+
+    h1{font-family:'Bebas Neue';font-size:34px;margin:0}
+    .page-header{
+      display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;
+    }
+
+    .btn{
+      padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:700;
+    }
+    .btn-primary{background:var(--cyan);color:#000}
+    .btn-danger{background:#ff5252;color:#fff}
+
+    table{width:100%;border-collapse:collapse;margin-top:14px}
+    th,td{padding:10px;border-bottom:1px solid rgba(0,0,0,0.1)}
+
+    /* modal */
+    .modal{
+      position:fixed;inset:0;background:rgba(0,0,0,0.4);
+      display:none;align-items:center;justify-content:center;
+      z-index:90;
+    }
+    .modal-card{
+      background:#fff;padding:20px;border-radius:12px;
+      max-width:420px;width:90%;
+    }
+    .modal-actions{display:flex;justify-content:flex-end;margin-top:12px;gap:10px}
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div class="logo">
+      <img src="Image/logoGrafikaCareerCenter-putih.png" 
+           alt="Logo Grafika Career Center" 
+           style="height:40px;">
+    </div>
+    <div class="search">
+      🔍 <input placeholder="Cari siswa..." />
+    </div>
+  </div>
+
+  <div class="header-right">
+    <button class="icon-btn">🔔</button>
+    <button class="icon-btn">👤</button>
+
+    <div class="menu">
+      <button class="icon-btn" id="menuBtn">⋯</button>
+      <div class="menu-content" id="menuBox">
+        <button onclick="location.href='dashboard-guru.html'">Dashboard</button>
+        <button onclick="location.href='manajemen-siswa.html'">Manajemen Siswa</button>
+        <button onclick="location.href='perusahaan-mitra.html'">Perusahaan Mitra</button>
+        <button onclick="location.href='guru-lowonganpkl.html'">Lowongan Magang</button>
+        <button onclick="location.href='pendaftaran-guru.html'">Pendaftaran Magang</button>
+        <button onclick="location.href='monitoring-guru.html'">Monitoring</button>
+        <button onclick="location.href='rekap-guru.html'">Rekap Monitoring</button>
+        <button onclick="location.href='dokumen-guru.html'">Dokumen</button>
+        <hr>
+        <button onclick="location.href='profile-guru.html'">Profile</button>
+        <button onclick="location.href='login.html'">Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="page-header">
+    <h1>Manajemen Siswa</h1>
+    <button class="btn btn-primary" id="btnAdd">+ Tambah Siswa</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama</th>
+        <th>Kelas</th>
+        <th>Status</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+</main>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <h3 id="modalTitle" style="margin-top:0;font-family:'Bebas Neue'">Form</h3>
+
+    <label>Nama Siswa<br>
+      <input id="m_nama" style="width:100%;padding:8px;margin:6px 0">
+    </label><br>
+
+    <label>Kelas<br>
+      <input id="m_kelas" style="width:100%;padding:8px;margin:6px 0">
+    </label><br>
+
+    <label>Status<br>
+      <select id="m_status" style="width:100%;padding:8px;margin:6px 0">
+        <option value="Magang">Magang</option>
+        <option value="Daftar">Daftar</option>
+        <option value="Selesai">Selesai</option>
+      </select>
+    </label>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Batal</button>
+      <button class="btn btn-primary" id="saveBtn">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // DATA
+  let siswa = JSON.parse(localStorage.getItem("siswaData") || "[]");
+  let editID = null;
+
+  function saveDB() {
+    localStorage.setItem("siswaData", JSON.stringify(siswa));
+  }
+
+  function renderTable() {
+    let tb = document.getElementById("tableBody");
+    tb.innerHTML = "";
+
+    siswa.forEach((s, i) => {
+      tb.innerHTML += `
+        <tr>
+          <td>${i+1}</td>
+          <td>${s.nama}</td>
+          <td>${s.kelas}</td>
+          <td>${s.status}</td>
+          <td>
+            <button class="btn" onclick="editSiswa(${s.id})">Edit</button>
+            <button class="btn btn-danger" onclick="hapusSiswa(${s.id})">Hapus</button>
+          </td>
+        </tr>
+      `;
+    });
+  }
+
+  // MODAL
+  function openModal(title){
+    document.getElementById("modalTitle").textContent = title;
+    document.getElementById("modal").style.display = "flex";
+  }
+  function closeModal(){
+    document.getElementById("modal").style.display = "none";
+  }
+
+  // ADD
+  document.getElementById("btnAdd").onclick = function(){
+    editID = null;
+    m_nama.value = "";
+    m_kelas.value = "";
+    m_status.value = "Daftar";
+    openModal("Tambah Siswa");
+  };
+
+  // EDIT
+  function editSiswa(id){
+    const s = siswa.find(x => x.id === id);
+    editID = id;
+    m_nama.value = s.nama;
+    m_kelas.value = s.kelas;
+    m_status.value = s.status;
+    openModal("Edit Siswa");
+  }
+
+  // SAVE
+  document.getElementById("saveBtn").onclick = function(){
+    let nama = m_nama.value.trim();
+    let kelas = m_kelas.value.trim();
+    let status = m_status.value;
+
+    if(!nama || !kelas){
+      alert("Nama dan kelas wajib diisi");
+      return;
+    }
+
+    if(editID){ // UPDATE
+      let s = siswa.find(x => x.id === editID);
+      s.nama = nama;
+      s.kelas = kelas;
+      s.status = status;
+    } else { // NEW
+      siswa.push({
+        id: Date.now(),
+        nama,
+        kelas,
+        status
+      });
+    }
+    saveDB();
+    renderTable();
+    closeModal();
+  };
+
+  // DELETE
+  function hapusSiswa(id){
+    if(confirm("Yakin hapus siswa?")){
+      siswa = siswa.filter(x => x.id !== id);
+      saveDB();
+      renderTable();
+    }
+  }
+
+  // MENU
+  document.getElementById("menuBtn").onclick = function(){
+    let box = document.getElementById("menuBox");
+    box.style.display = box.style.display === "block" ? "none" : "block";
+  };
+
+  // INIT
+  renderTable();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profil Guru — Grafika Career Center</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --black:#000;
+  --white:#fff;
+  --cyan:#00B4D8;
+  --blue600:#0077B6;
+  --blue900:#023E8A;
+  --radius:14px;
+  --shadow:0 6px 18px rgba(2,46,91,0.08);
+}
+
+body{margin:0;background:#fff;font-family:'PT Sans';color:#000;}
+*{box-sizing:border-box}
+
+.header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 20px;background:linear-gradient(90deg,var(--blue900),var(--blue600));
+  color:#fff;position:sticky;top:0;z-index:50;
+}
+.header-left{display:flex;align-items:center;gap:12px}
+.logo{font-family:'Bebas Neue';font-size:28px}
+.search{
+  background:#fff;padding:8px 12px;border-radius:999px;box-shadow:var(--shadow);
+  display:flex;align-items:center;min-width:300px;
+}
+.search input{border:0;background:transparent;outline:0;font-size:14px}
+
+.header-right{display:flex;align-items:center;gap:12px}
+.icon-btn{background:transparent;border:0;color:#fff;font-size:20px;padding:8px;cursor:pointer;position:relative}
+.badge{
+  background:var(--cyan);color:#000;border-radius:999px;padding:2px 6px;
+  font-size:12px;font-weight:700;position:absolute;top:0;right:0;
+}
+
+.menu{position:relative}
+.menu-box{
+  display:none;position:absolute;right:0;top:44px;background:#fff;color:#000;
+  min-width:260px;border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,0.12);padding:8px;
+}
+.menu-box button{
+  width:100%;padding:10px;background:transparent;border:0;cursor:pointer;text-align:left;border-radius:8px;
+}
+.menu-box hr{border:0;border-top:1px solid rgba(0,0,0,0.08);margin:6px 0}
+
+.container{
+  max-width:900px;margin:24px auto;padding:0 16px;
+}
+
+h1{font-family:'Bebas Neue';font-size:36px;margin:0 0 6px 0}
+.muted{color:rgba(0,0,0,0.6)}
+
+.card{
+  background:#fff;padding:20px;border-radius:var(--radius);box-shadow:var(--shadow);margin-top:20px;
+}
+
+.profile-header{text-align:center;margin-bottom:20px}
+.profile-pic{
+  width:150px;height:150px;border-radius:50%;object-fit:cover;border:4px solid var(--blue900);
+  box-shadow:var(--shadow);cursor:pointer;
+}
+.profile-name{font-family:'Bebas Neue';font-size:32px;margin-top:10px}
+
+.form-group{margin-bottom:14px}
+label{font-weight:700;font-size:14px}
+input{
+  width:100%;padding:10px;border-radius:10px;border:1px solid rgba(0,0,0,0.15);
+  margin-top:6px;font-size:15px;
+}
+
+.btn{padding:10px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
+.btn-primary{background:var(--cyan)}
+.btn-ghost{background:transparent;border:1px solid rgba(0,0,0,0.15)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <div class="logo">GRAFIKA</div>
+    <div class="search">🔍 <input id="globalSearch" placeholder="Cari halaman / fitur ..."></div>
+  </div>
+
+  <div class="header-right">
+    <button id="notifBtn" class="icon-btn">🔔<span id="notifBadge" class="badge" style="display:none;">0</span></button>
+    <button id="profileBtn" class="icon-btn">👤</button>
+
+    <div class="menu">
+      <button id="dotsBtn" class="icon-btn">⋯</button>
+      <div id="menuBox" class="menu-box">
+        <button onclick="location.href='dashboard-guru.html'">Dashboard</button>
+        <button onclick="location.href='manajemen-siswa.html'">Manajemen Siswa</button>
+        <button onclick="location.href='perusahaan-mitra.html'">Perusahaan Mitra</button>
+        <button onclick="location.href='guru-lowonganpkl.html'">Lowongan Magang</button>
+        <button onclick="location.href='pendaftaran-guru.html'">Pendaftaran Magang</button>
+        <button onclick="location.href='monitoring-guru.html'">Monitoring</button>
+        <button onclick="location.href='rekap-guru.html'">Rekap Monitoring</button>
+        <button onclick="location.href='dokumen-guru.html'">Dokumen</button>
+        <hr>
+        <button onclick="location.href='profile-guru.html'">Profile</button>
+        <button onclick="location.href='login.html'">Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- CONTENT -->
+<main class="container">
+
+  <h1>Profil Guru</h1>
+  <div class="muted">Informasi akun guru pembimbing</div>
+
+  <div class="card">
+
+    <div class="profile-header">
+      <img id="profilePic" class="profile-pic" src="https://via.placeholder.com/150" alt="Foto Profil">
+      <input type="file" id="profileUpload" style="display:none" accept="image/*">
+      <div class="profile-name" id="displayName">Nama Guru</div>
+    </div>
+
+    <div class="form-group">
+      <label>Nama Lengkap</label>
+      <input id="f_nama">
+    </div>
+    <div class="form-group">
+      <label>NIP</label>
+      <input id="f_nip">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input id="f_email" type="email">
+    </div>
+    <div class="form-group">
+      <label>No. Telepon</label>
+      <input id="f_telp" type="tel">
+    </div>
+
+    <button id="saveBtn" class="btn btn-primary" style="margin-top:14px;">Simpan Perubahan</button>
+
+  </div>
+
+</main>
+
+<script>
+/* LOAD STORAGE */
+const STORAGE="grafika_guru_data_v1";
+function load(){ return JSON.parse(localStorage.getItem(STORAGE)||"{}"); }
+function save(d){ localStorage.setItem(STORAGE,JSON.stringify(d)); }
+
+function initDefault(){
+  let D=load();
+  if(!D.profile){
+    D.profile={
+      nama:"Nama Guru",
+      nip:"-",
+      email:"-",
+      telp:"-",
+      foto:""
+    };
+    save(D);
+  }
+}
+initDefault();
+
+/* ELEMENTS */
+const f_nama=document.getElementById("f_nama");
+const f_nip=document.getElementById("f_nip");
+const f_email=document.getElementById("f_email");
+const f_telp=document.getElementById("f_telp");
+const profilePic=document.getElementById("profilePic");
+const displayName=document.getElementById("displayName");
+const profileUpload=document.getElementById("profileUpload");
+
+/* LOAD PROFILE */
+function renderProfile(){
+  const D=load();
+  const p=D.profile;
+
+  f_nama.value=p.nama;
+  f_nip.value=p.nip;
+  f_email.value=p.email;
+  f_telp.value=p.telp;
+
+  displayName.textContent=p.nama;
+  profilePic.src = p.foto || "https://via.placeholder.com/150";
+}
+renderProfile();
+
+/* SAVE */
+document.getElementById("saveBtn").onclick=()=>{
+  const D=load();
+  D.profile = {
+    nama:f_nama.value.trim(),
+    nip:f_nip.value.trim(),
+    email:f_email.value.trim(),
+    telp:f_telp.value.trim(),
+    foto:D.profile.foto
+  };
+  save(D);
+  renderProfile();
+  alert("Profil berhasil diperbarui!");
+};
+
+/* UPLOAD FOTO */
+profilePic.onclick=()=>profileUpload.click();
+
+profileUpload.onchange=(e)=>{
+  const file=e.target.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    const D=load();
+    D.profile.foto=reader.result;
+    save(D);
+    renderProfile();
+  };
+  reader.readAsDataURL(file);
+};
+
+/* MENU DOTS */
+document.getElementById("dotsBtn").onclick=(e)=>{
+  const m=document.getElementById("menuBox");
+  m.style.display = m.style.display==="block" ? "none" : "block";
+  e.stopPropagation();
+};
+document.getElementById("menuBox").onclick=(e)=>{
+  const b=e.target.closest("[data-href]");
+  if(b) location.href=b.dataset.href;
+};
+document.addEventListener("click",()=>document.getElementById("menuBox").style.display="none");
+
+/* NOTIF */
+document.getElementById("notifBtn").onclick=()=>{
+  const D=load();
+  alert((D.notif||[]).map(n=>n.text).join("\n") || "Tidak ada notif");
+};
+
+/* PROFILE BTN */
+document.getElementById("profileBtn").onclick=()=>location.href="profile-guru.html";
+
+/* LOGOUT */
+document.getElementById("logoutBtn").onclick=()=>{
+  alert("Logout...");
+  location.href="dashboard-guru.html";
+};
+
+/* SEARCH (optional global) */
+document.getElementById("globalSearch").addEventListener("input",(e)=>{
+  console.log("Search:", e.target.value);
+});
+
+</script>
+
+</body>
+</html>

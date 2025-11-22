@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Pendaftaran Magang — Grafika Career Center (Guru)</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --black:#000;
+      --white:#fff;
+      --cyan:#00B4D8;
+      --blue600:#0077B6;
+      --blue900:#023E8A;
+      --radius:12px;
+      --shadow:0 6px 18px rgba(2,46,91,0.06);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'PT Sans';background:var(--white);color:var(--black)}
+    a{text-decoration:none;color:inherit}
+
+    /* HEADER */
+    .header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;
+      background:linear-gradient(90deg,var(--blue900),var(--blue600));color:#fff;position:sticky;top:0;z-index:50}
+    .header-left{display:flex;align-items:center;gap:12px}
+    .logo{font-family:'Bebas Neue';font-size:26px}
+
+    .search{background:#fff;padding:8px 12px;border-radius:999px;display:flex;align-items:center;min-width:300px;box-shadow:var(--shadow)}
+    .search input{border:0;outline:none;background:transparent;font-size:14px}
+
+    .header-right{display:flex;align-items:center;gap:12px}
+    .icon-btn{background:transparent;border:0;color:#fff;font-size:20px;padding:8px;cursor:pointer;border-radius:8px}
+    .badge{background:var(--cyan);color:#000;padding:2px 6px;font-size:12px;border-radius:999px;font-weight:700;position:absolute;top:0;right:0}
+
+    /* MENU TITIK 3 */
+    .menu{position:relative}
+    .menu-box{display:none;position:absolute;right:0;top:44px;background:#fff;color:#000;border-radius:10px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.12);min-width:260px;padding:8px}
+    .menu-box button{background:transparent;border:0;width:100%;padding:10px;text-align:left;border-radius:8px;cursor:pointer}
+    .menu-box hr{border:0;border-top:1px solid rgba(0,0,0,0.08);margin:6px 0}
+
+    /* CONTENT */
+    .container{max-width:1100px;margin:20px auto;padding:0 16px}
+    h1{font-family:'Bebas Neue';margin:0;font-size:32px}
+    .muted{color:rgba(0,0,0,0.6)}
+    .page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+
+    .card{background:#fff;padding:14px;border-radius:var(--radius);box-shadow:var(--shadow)}
+
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{padding:10px;border-bottom:1px solid rgba(0,0,0,0.06)}
+    th{background:rgba(0,0,0,0.03);font-weight:700}
+
+    .btn{padding:8px 12px;border-radius:8px;border:0;cursor:pointer}
+    .btn-primary{background:var(--cyan);font-weight:700}
+    .btn-ghost{background:transparent;border:1px solid rgba(0,0,0,0.08)}
+    .btn-danger{background:#ff5252;color:#fff}
+
+    /* MODAL */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,0.35);display:none;align-items:center;justify-content:center;z-index:60}
+    .modal-card{background:#fff;padding:20px;border-radius:12px;max-width:600px;width:100%}
+    .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:12px}
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+  <div class="header-left">
+    <div class="logo">
+      <img src="Image/logoGrafikaCareerCenter-putih.png" 
+           alt="Logo Grafika Career Center" 
+           style="height:40px;">
+    </div>
+      <div class="search">
+        🔍 <input id="globalSearch" placeholder="Cari siswa / perusahaan..."/>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <button class="icon-btn" id="notifBtn">🔔<span id="notifBadge" class="badge" style="display:none">0</span></button>
+      <button class="icon-btn" id="profileBtn">👤</button>
+
+      <div class="menu">
+        <button id="dotsBtn" class="icon-btn">⋯</button>
+        <div id="menuBox" class="menu-box">
+          <button onclick="location.href='dashboard-guru.html'">Dashboard</button>
+        <button onclick="location.href='manajemen-siswa.html'">Manajemen Siswa</button>
+        <button onclick="location.href='perusahaan-mitra.html'">Perusahaan Mitra</button>
+        <button onclick="location.href='guru-lowonganpkl.html'">Lowongan Magang</button>
+        <button onclick="location.href='pendaftaran-guru.html'">Pendaftaran Magang</button>
+        <button onclick="location.href='monitoring-guru.html'">Monitoring</button>
+        <button onclick="location.href='rekap-guru.html'">Rekap Monitoring</button>
+        <button onclick="location.href='dokumen-guru.html'">Dokumen</button>
+        <hr>
+        <button onclick="location.href='profile-guru.html'">Profile</button>
+        <button onclick="location.href='login.html'">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="container">
+    <div class="page-header">
+      <div>
+        <h1>Pendaftaran Magang</h1>
+        <div class="muted">Kelola permohonan magang siswa</div>
+      </div>
+
+      <button id="exportBtn" class="btn btn-ghost">Export CSV</button>
+    </div>
+
+    <div class="card">
+      <table id="pendaftaranTable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Siswa</th>
+            <th>Perusahaan</th>
+            <th>Lowongan</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- MODAL DETAIL -->
+  <div id="modal" class="modal">
+    <div class="modal-card">
+      <h2 style="font-family:'Bebas Neue'" id="modalTitle">Detail Pendaftaran</h2>
+      
+      <pre id="modalContent" style="white-space:pre-wrap;font-family:'PT Sans';font-size:15px"></pre>
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="modalClose">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE = "grafika_guru_data_v1";
+
+    function load(){ return JSON.parse(localStorage.getItem(STORAGE)||"{}"); }
+    function save(d){ localStorage.setItem(STORAGE, JSON.stringify(d)); }
+
+    // SEED DATA JIKA BELUM ADA
+    function seed(){
+      if(!localStorage.getItem(STORAGE)){
+        localStorage.setItem(STORAGE, JSON.stringify({
+          siswa:[],
+          mitra:[],
+          lowongan:[],
+          notif:[],
+          monitoring:[],
+          pendaftaran:[
+            {id:1,nama:'Andi Putra',kelas:'XII RPL 1',perusahaan:'PT Maju Jaya',lowongan:'Frontend Developer',status:'Menunggu'},
+            {id:2,nama:'Budi Santoso',kelas:'XII MM',perusahaan:'CV Kreatif',lowongan:'Teknisi',status:'Menunggu'}
+          ]
+        }));
+      }
+    }
+    seed();
+
+    const tbody = document.querySelector("#pendaftaranTable tbody");
+    const modal = document.getElementById("modal");
+    const modalContent = document.getElementById("modalContent");
+
+    // ======== RENDER TABLE ========
+    function render(q=""){
+      const D = load();
+      let rows = D.pendaftaran||[];
+
+      if(q){
+        q=q.toLowerCase();
+        rows = rows.filter(r =>
+          r.nama.toLowerCase().includes(q) ||
+          r.perusahaan.toLowerCase().includes(q) ||
+          r.lowongan.toLowerCase().includes(q)
+        );
+      }
+
+      tbody.innerHTML="";
+      rows.forEach((p,i)=>{
+        const tr=document.createElement("tr");
+        tr.innerHTML=`
+          <td>${i+1}</td>
+          <td>${p.nama}</td>
+          <td>${p.perusahaan}</td>
+          <td>${p.lowongan}</td>
+          <td>${p.status}</td>
+          <td>
+            <button class="btn btn-ghost" data-view="${p.id}">Detail</button>
+            <button class="btn btn-primary" data-acc="${p.id}">Setujui</button>
+            <button class="btn btn-danger" data-rej="${p.id}">Tolak</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // notif badge
+      const nb = document.getElementById("notifBadge");
+      if((load().notif||[]).length){
+        nb.style.display='inline-block';
+        nb.textContent=load().notif.length;
+      } else nb.style.display='none';
+    }
+    render();
+
+    // ======== TABLE ACTIONS ========
+    tbody.addEventListener("click",(e)=>{
+      const view=e.target.dataset.view;
+      const acc=e.target.dataset.acc;
+      const rej=e.target.dataset.rej;
+      const D = load();
+
+      if(view){
+        const item = D.pendaftaran.find(x=>x.id==view);
+        modalContent.textContent =
+`Nama: ${item.nama}
+Kelas: ${item.kelas}
+Perusahaan: ${item.perusahaan}
+Lowongan: ${item.lowongan}
+Status: ${item.status}`;
+        modal.style.display="flex";
+      }
+
+      if(acc){
+        const item=D.pendaftaran.find(x=>x.id==acc);
+        item.status="Disetujui";
+        save(D);
+        render();
+      }
+
+      if(rej){
+        if(confirm("Tolak pendaftaran ini?")){
+          const item=D.pendaftaran.find(x=>x.id==rej);
+          item.status="Ditolak";
+          save(D);
+          render();
+        }
+      }
+    });
+
+    // SEARCH
+    document.getElementById("globalSearch").addEventListener("input",(e)=>render(e.target.value.trim()));
+
+    // MODAL CLOSE
+    document.getElementById("modalClose").onclick=()=>modal.style.display="none";
+
+    // EXPORT CSV
+    document.getElementById("exportBtn").onclick=()=>{
+      const D=load();
+      const rows=[
+        ["Nama","Kelas","Perusahaan","Lowongan","Status"],
+        ...(D.pendaftaran||[]).map(p=>[p.nama,p.kelas,p.perusahaan,p.lowongan,p.status])
+      ];
+      const csv=rows.map(r=>r.map(c=>`"${String(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+      const blob=new Blob([csv],{type:'text/csv'});
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download="pendaftaran.csv";
+      a.click();
+    };
+
+    // MENU TITIK 3
+    document.getElementById("dotsBtn").onclick=(e)=>{
+      const box=document.getElementById("menuBox");
+      box.style.display = box.style.display==="block" ? "none":"block";
+      e.stopPropagation();
+    };
+    document.addEventListener("click",(e)=>{
+      if(!e.target.closest(".menu")) document.getElementById("menuBox").style.display="none";
+    });
+    document.getElementById("menuBox").onclick=(e)=>{
+      const b=e.target.closest("[data-href]");
+      if(b) location.href=b.dataset.href;
+    };
+
+    // PROFIL + NOTIF
+    document.getElementById("profileBtn").onclick=()=>location.href="profile-guru.html";
+    document.getElementById("notifBtn").onclick=()=>{
+      const D=load();
+      alert((D.notif||[]).map(n=>n.text).join("\n")||"Tidak ada notifikasi");
+    };
+
+    // LOGOUT
+    document.getElementById("logoutBtn").onclick=()=>{
+      alert("Logout berhasil (placeholder)");
+      location.href="dashboard-guru.html";
+    };
+  </script>
+
+</body>
+</html>

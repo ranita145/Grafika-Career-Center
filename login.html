@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login | Grafika Career Center</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- GOOGLE FONT Poppins -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: 'Poppins', sans-serif; /* KEMBALI KE POPPINS */
+    }
+
+
+    /* FULL BACKGROUND IMAGE */
+    .bg-image {
+        background: url('image/smk_grafika_yayasan_lektur_cover.jpeg') no-repeat center center fixed;
+        background-size: cover;
+        height: 100vh;
+        width: 100%;
+        position: relative;
+    }
+
+    .bg-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(2px);
+    }
+
+    .login-card {
+        width: 380px;
+        padding: 35px;
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        position: relative;
+        z-index: 2;
+        animation: fadeIn 0.7s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+        width: 200px;
+        margin-bottom: 10px;
+    }
+
+    .btn-primary {
+        background-color: #023E8A !important;
+        border-color: #023E8A !important;
+    }
+
+    /* LINK WARNA #023E8A */
+    .back-link {
+        color: #023E8A !important;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="bg-image">
+    <div class="bg-overlay"></div>
+
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="login-card text-center">
+            <img class="logo" src="image/logoGrafikaCareerCenter.png" alt="GRAFIKA CAREER CENTER" />
+
+            <h4 class="mb-3 fw-text text-black">Log In</h4>
+
+            <form onsubmit="return loginGuru()">
+
+                <label for="guru-username" class="form-label text-black fw-normal text-start w-100">
+                    Email
+                </label>
+                <input type="text" id="guru-username" class="form-control mb-3" placeholder="Username" required>
+
+                <label for="guru-password" class="form-label text-black fw-normal text-start w-100">
+                    Password
+                </label>
+                <input type="password" id="guru-password" class="form-control mb-3" placeholder="Password" required>
+
+                <button type="submit" class="btn btn-primary w-100 py-2 mb-2">Masuk</button>
+
+            </form>
+
+            <!-- LINK WARNA BIRU -->
+            <a href="home.html" class="back-link d-block small mt-1">Kembali ke Home</a>
+
+        </div>
+    </div>
+</div>
+
+<script>
+function loginGuru() {
+    const u = document.getElementById("guru-username").value.trim();
+    const p = document.getElementById("guru-password").value.trim();
+
+    if (u === "guru" && p === "1234") {
+        localStorage.setItem("gcc_logged", "guru");
+        window.location.href = "dashboard-guru.html";
+        return false;
+    }
+
+    if (u === "siswa" && p === "1234") {
+        localStorage.setItem("gcc_logged", "siswa");
+        window.location.href = "dashboard-siswa.html";
+        return false;
+    }
+
+    alert("Username atau password salah!");
+    return false;
+
+    const username = document.getElementById("username").value;
+
+if (username === "siswa") {
+    localStorage.setItem("loggedIn", "true");
+    localStorage.setItem("username", "siswa");
+
+    // redirect ke home setelah login
+    window.location.href = "home.html"; 
+} else {
+    alert("Username salah, gunakan: siswa");
+}
+}
+</script>
+
+</body>
+</html>

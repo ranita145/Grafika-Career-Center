@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Rekap Monitoring — Grafika Career Center (Guru)</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --black:#000;
+      --white:#fff;
+      --cyan:#00B4D8;
+      --blue600:#0077B6;
+      --blue900:#023E8A;
+      --radius:12px;
+      --shadow:0 6px 18px rgba(2,46,91,0.06);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'PT Sans';background:var(--white);color:var(--black)}
+
+    /* HEADER */
+    .header{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:12px 20px;background:linear-gradient(90deg,var(--blue900),var(--blue600));
+      color:#fff;position:sticky;top:0;z-index:50;
+    }
+    .header-left{display:flex;align-items:center;gap:12px}
+    .logo{font-family:'Bebas Neue';font-size:26px}
+
+    .search{
+      background:#fff;padding:8px 12px;border-radius:999px;display:flex;
+      align-items:center;min-width:300px;box-shadow:var(--shadow)
+    }
+    .search input{border:0;background:transparent;outline:none;font-size:14px}
+
+    .header-right{display:flex;align-items:center;gap:12px}
+    .icon-btn{background:transparent;border:0;color:#fff;font-size:20px;padding:8px;cursor:pointer}
+
+    .badge{position:absolute;top:0;right:0;background:var(--cyan);color:#000;
+      padding:2px 6px;border-radius:999px;font-size:12px;font-weight:700}
+
+    /* menu */
+    .menu{position:relative}
+    .menu-box{
+      display:none;position:absolute;right:0;top:44px;background:#fff;color:#000;
+      border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.12);
+      min-width:260px;padding:8px
+    }
+    .menu-box button{
+      width:100%;padding:10px;background:transparent;border:0;text-align:left;cursor:pointer;border-radius:8px
+    }
+    .menu-box hr{border:0;border-top:1px solid rgba(0,0,0,0.1);margin:6px 0}
+
+    /* content */
+    .container{max-width:1100px;margin:20px auto;padding:0 16px}
+    h1{font-family:'Bebas Neue';font-size:32px;margin:0}
+    .muted{color:rgba(0,0,0,0.6)}
+
+    .filters{
+      display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px
+    }
+    .filters label{font-weight:700;font-size:14px}
+    .filters input, .filters select{
+      padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.15)
+    }
+
+    .card{background:#fff;padding:14px;border-radius:var(--radius);box-shadow:var(--shadow)}
+
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    th,td{padding:10px;border-bottom:1px solid rgba(0,0,0,0.06)}
+    th{background:rgba(0,0,0,0.03);font-weight:700}
+
+    .btn{padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+    .btn-primary{background:var(--cyan)}
+    .btn-ghost{background:transparent;border:1px solid rgba(0,0,0,0.1)}
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+  <div class="header-left">
+    <div class="logo">
+      <img src="Image/logoGrafikaCareerCenter-putih.png" 
+           alt="Logo Grafika Career Center" 
+           style="height:40px;">
+    </div>
+
+      <div class="search">
+        🔍 <input id="globalSearch" placeholder="Cari siswa..."/>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <button id="notifBtn" class="icon-btn">🔔<span id="notifBadge" class="badge" style="display:none">0</span></button>
+      <button id="profileBtn" class="icon-btn">👤</button>
+
+      <div class="menu">
+        <button id="dotsBtn" class="icon-btn">⋯</button>
+        <div id="menuBox" class="menu-box">
+          <button onclick="location.href='dashboard-guru.html'">Dashboard</button>
+        <button onclick="location.href='manajemen-siswa.html'">Manajemen Siswa</button>
+        <button onclick="location.href='perusahaan-mitra.html'">Perusahaan Mitra</button>
+        <button onclick="location.href='guru-lowonganpkl.html'">Lowongan Magang</button>
+        <button onclick="location.href='pendaftaran-guru.html'">Pendaftaran Magang</button>
+        <button onclick="location.href='monitoring-guru.html'">Monitoring</button>
+        <button onclick="location.href='rekap-guru.html'">Rekap Monitoring</button>
+        <button onclick="location.href='dokumen-guru.html'">Dokumen</button>
+        <hr>
+        <button onclick="location.href='profile-guru.html'">Profile</button>
+        <button onclick="location.href='login.html'">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="container">
+
+    <h1>Rekap Monitoring</h1>
+    <div class="muted">Ringkasan monitoring seluruh siswa</div>
+
+    <!-- FILTERS -->
+    <div class="filters">
+      <div>
+        <label>Nama Siswa</label><br>
+        <select id="filterNama">
+          <option value="">Semua</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Dari Tanggal</label><br>
+        <input type="date" id="filterStart">
+      </div>
+
+      <div>
+        <label>Sampai Tanggal</label><br>
+        <input type="date" id="filterEnd">
+      </div>
+
+      <div style="display:flex;align-items:end;">
+        <button id="filterBtn" class="btn btn-primary">Terapkan</button>
+      </div>
+
+      <div style="display:flex;align-items:end;">
+        <button id="resetBtn" class="btn btn-ghost">Reset</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <table id="rekapTable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Siswa</th>
+            <th>Total Monitoring</th>
+            <th>Rata-Rata Nilai</th>
+            <th>Catatan Terakhir</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <div style="margin-top:20px;display:flex;gap:12px">
+        <button id="exportCSV" class="btn btn-primary">Export CSV</button>
+        <button id="exportPDF" class="btn btn-ghost">Export PDF</button>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const STORAGE="grafika_guru_data_v1";
+
+    function load(){ return JSON.parse(localStorage.getItem(STORAGE)||"{}"); }
+    function save(d){ localStorage.setItem(STORAGE,JSON.stringify(d)); }
+
+    const tbody=document.querySelector("#rekapTable tbody");
+    const filterNama=document.getElementById("filterNama");
+    const filterStart=document.getElementById("filterStart");
+    const filterEnd=document.getElementById("filterEnd");
+    const searchInput=document.getElementById("globalSearch");
+
+    /* Populate dropdown nama siswa */
+    function loadNamaSelect(){
+      const D=load();
+      filterNama.innerHTML='<option value="">Semua</option>';
+      (D.siswa||[]).forEach(s=>{
+        const op=document.createElement("option");
+        op.value=s.nama;
+        op.textContent=s.nama;
+        filterNama.appendChild(op);
+      });
+    }
+
+    /* Render tabel rekap */
+    function render(){
+      const D=load();
+      let data = D.monitoring || [];
+
+      let q = searchInput.value.trim().toLowerCase();
+      let nama = filterNama.value;
+      let start = filterStart.value;
+      let end = filterEnd.value;
+
+      if(q){
+        data=data.filter(m=>m.nama.toLowerCase().includes(q));
+      }
+      if(nama){
+        data=data.filter(m=>m.nama===nama);
+      }
+      if(start){
+        data=data.filter(m=>m.tanggal>=start);
+      }
+      if(end){
+        data=data.filter(m=>m.tanggal<=end);
+      }
+
+      let group={};
+      data.forEach(m=>{
+        if(!group[m.nama]) group[m.nama]=[];
+        group[m.nama].push(m);
+      });
+
+      tbody.innerHTML="";
+      let i=1;
+      Object.keys(group).forEach(nm=>{
+        let rows=group[nm];
+        let total=rows.length;
+        let avg=(
+          rows.filter(r=>r.nilai!=null).reduce((a,b)=>a+b.nilai,0) /
+          (rows.filter(r=>r.nilai!=null).length||1)
+        ).toFixed(1);
+
+        let last = rows.sort((a,b)=> b.tanggal.localeCompare(a.tanggal))[0];
+
+        const tr=document.createElement("tr");
+        tr.innerHTML=`
+          <td>${i++}</td>
+          <td>${nm}</td>
+          <td>${total}</td>
+          <td>${avg}</td>
+          <td>${last.catatan || '-'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    /* EVENTS */
+    searchInput.addEventListener("input",render);
+    document.getElementById("filterBtn").onclick=render;
+    document.getElementById("resetBtn").onclick=()=>{
+      filterNama.value="";
+      filterStart.value="";
+      filterEnd.value="";
+      searchInput.value="";
+      render();
+    };
+
+    /* Export CSV */
+    document.getElementById("exportCSV").onclick=()=>{
+      let rows=[["Nama","Total","Rata-rata Nilai","Catatan Terakhir"]];
+      [...tbody.querySelectorAll("tr")].forEach(r=>{
+        let c=[...r.querySelectorAll("td")].map(td=>td.textContent);
+        rows.push(c.slice(1)); 
+      });
+      let csv=rows.map(r=>r.join(",")).join("\n");
+      let a=document.createElement("a");
+      a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);
+      a.download="rekap-monitoring.csv";
+      a.click();
+    };
+
+    /* Export PDF (menggunakan print mode browser) */
+    document.getElementById("exportPDF").onclick=()=>window.print();
+
+    /* menu dots */
+    dotsBtn.onclick=(e)=>{
+      const b=document.getElementById("menuBox");
+      b.style.display = b.style.display==="block" ? "none" : "block";
+      e.stopPropagation();
+    };
+    document.getElementById("menuBox").onclick=(e)=>{
+      const btn=e.target.closest("[data-href]");
+      if(btn) location.href=btn.dataset.href;
+    };
+    document.addEventListener("click",()=>document.getElementById("menuBox").style.display="none");
+
+    /* notif */
+    document.getElementById("notifBtn").onclick=()=>{
+      const D=load();
+      alert((D.notif||[]).map(n=>n.text).join("\n") || "Tidak ada notif");
+    };
+
+    /* profile */
+    document.getElementById("profileBtn").onclick=()=>location.href="profile-guru.html";
+
+    /* logout */
+    document.getElementById("logoutBtn").onclick=()=>{
+      alert("Logout...");
+      location.href="dashboard-guru.html";
+    };
+
+    /* init */
+    loadNamaSelect();
+    render();
+  </script>
+</body>
+</html>

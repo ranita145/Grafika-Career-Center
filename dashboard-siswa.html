@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Grafika Career Center</title>
+
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+  <style>
+    body, html {
+      font-family: 'Poppins', sans-serif !important;
+    }
+
+    /* === Sidebar geser normal, bukan overlay === */
+    #wrapper {
+      transition: margin-right 0.3s ease;
+    }
+
+    /* Lebar sidebar */
+    #accordionSidebar {
+      width: 320px;             /* dari 260px → lebih lebar agar menutup ruang */
+      max-width: 100vw;         /* lindungi agar tetap penuh layar */
+      right: 0;
+      transform: translateX(100%);
+      transition: transform .3s ease;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      z-index: 1020;
+      overflow-y: auto;
+      background-color: #023E8A; /* pastikan bukan putih */
+    }
+
+    /* Sidebar muncul */
+    #accordionSidebar.active {
+      transform: translateX(0);
+    }
+
+    /* Overlay tetap dipakai */
+    #sidebarOverlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,.35);
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s;
+      z-index: 1010;
+    }
+
+    #sidebarOverlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ===== CUSTOM COLOR ===== */
+  :root{
+    --grafika-orange: #FF7A00;
+    --grafika-blue: #023E8A; /* Warna biru baru */
+  }
+
+  /* Class baru untuk Navigasi Biru Grafika */
+  .bg-gradient-grafika {
+    background-color: var(--grafika-blue);
+    background-image: linear-gradient(180deg, #023E8A 10%);
+    background-size: cover;
+  }
+
+  .topbar {
+  height: 60px !important;
+  display: flex;
+  align-items: center; /* tengah secara vertikal */
+  }
+
+  /* Warna biru juga untuk topbar */
+  .navbar.bg-white {
+    background-color: #023E8A !important;
+  }
+  .navbar.bg-white .nav-link,
+  .navbar.bg-white .navbar-brand,
+  .navbar.bg-white .text-gray-600 {
+    color: #ffffff !important;
+  }
+  .navbar.bg-white .dropdown-menu {
+    background-color: #ffffff;
+  }
+  .navbar.bg-white .dropdown-item:hover {
+    background-color: #f0f4ff;
+  }
+
+  .navbar-nav.ml-auto {
+  margin-right: 7px !important; /* geser semuanya ke kiri */
+  }
+
+  /* === Bersihkan efek tombol hamburger === */
+  #sidebarToggleTop {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    padding: 0.4rem;
+    transition: transform 0.1s ease;
+  }
+
+  #sidebarToggleTop i {
+    color: #ffffff; /* warna ikon putih */
+  }
+
+  #sidebarToggleTop:hover,
+  #sidebarToggleTop:focus,
+  #sidebarToggleTop:active {
+    background: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transform: scale(1.05); /* sedikit animasi halus */
+  }
+
+  #sidebarToggleTop:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* ===== HERO PENGUMUMAN ===== */
+  .hero-announcement{
+    position: relative;
+    background: url("image/smk_grafika_yayasan_lektur_cover.jpeg") center center no-repeat;
+    background-size: cover;
+    min-height: 360px;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .hero-announcement .hero-overlay{ position:absolute; inset:0; background:rgba(2,46,115,.55); }
+  .hero-inner{
+    position:absolute; left:0; right:0; top:55%; transform:translateY(-50%);
+    display:grid; grid-template-columns:72px 1fr; align-items:center; gap:1.25rem; padding:0 2.25rem; color:#fff;
+  }
+    .hero-rail{ position:relative; height:220px; display:flex; flex-direction:column; justify-content:space-between; align-items:center; }
+    .hero-rail::before{ content:""; position:absolute; left:50%; transform:translateX(-50%); top:-8px; bottom:-8px; width:2px; background:rgba(255,255,255,.5); border-radius:2px; }
+    .rail-dot{
+      width:36px;height:36px;border-radius:50%;border:2px solid #fff;background:rgba(255,255,255,.15);color:#fff;font-weight:800;
+      display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;transition:transform .15s,background-color .15s,color .15s;
+      backdrop-filter:blur(2px);
+    }
+    .rail-dot:hover{ transform:scale(1.04); }
+    .rail-dot.active,.rail-dot[aria-selected="true"]{ background:#fff;color:#224abe; box-shadow:0 6px 14px rgba(0,0,0,.18); }
+
+    .hero-copy{ max-width:920px; transition:opacity .25s ease, transform .25s ease; }
+    .hero-copy.is-fading{ opacity:0; transform:translateY(6px); }
+    .hero-tag{
+      display:inline-block; margin-bottom:.25rem; background:rgba(255,255,255,.22); border:1px solid rgba(255,255,255,.35);
+      padding:.25rem .6rem; border-radius:.5rem; font-size:.9rem; font-weight:600;
+    }
+    .headline .line{ font-family:inherit; font-weight:800; text-transform:uppercase; letter-spacing:.3px; line-height:1.1; text-shadow:0 2px 6px rgba(0,0,0,.28); }
+    .headline .line + .line{ margin-top:.25rem; }
+    @media (min-width:768px){ .headline .line{ font-size:2.2rem; } }
+    @media (min-width:992px){ .headline .line{ font-size:2.6rem; } }
+
+    /* ===== LOWONGAN PKL (GRID VERTIKAL) ===== */
+    .jobs-header h4{ font-weight:800; margin:0; }
+
+    .jobs-grid{
+        display:grid;
+        grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+        grid-gap:18px;               /* jarak antar kartu */
+    }
+
+    .job-card{
+        background:#fff; border-radius:18px; box-shadow:0 6px 18px rgba(31,45,61,.08);
+        display:block; color:inherit; text-decoration:none;
+        width:100%; min-width:0; max-width:none;  /* full lebar kolom */
+        transition:transform .15s ease, box-shadow .15s ease;
+    }
+    .job-card:hover{ transform:translateY(-2px); box-shadow:0 10px 24px rgba(31,45,61,.12); text-decoration:none; }
+
+    .job-thumb{ height:170px; background:#eef center/cover no-repeat; border-radius:18px 18px 0 0; }
+    .job-body{ padding:14px 16px 16px; }
+    .job-title{ font-weight:800; font-size:1.05rem; line-height:1.2; }
+    .job-location{ color:#6c757d; font-size:.9rem; margin-top:2px; }
+    .job-badge{ display:inline-block; margin-top:8px; padding:.35rem .7rem; border-radius:999px; font-weight:700; }
+  
+  /* ===== EDUKASI: Nilai-Nilai PKL ===== */
+    .edu-wrap{margin-top:1.75rem;}
+    .edu-surface{
+    background:#f6f8ff;
+    border:1px solid #e9eeff;
+    border-radius:20px;
+    padding:1.5rem;
+    }
+    .edu-title{
+    font-weight:900;
+    color:var(--grafika-orange);
+    letter-spacing:.2px;
+    }
+    .edu-grid{margin-left:-.5rem;margin-right:-.5rem;}
+    .edu-grid>[class*="col-"]{padding:.5rem;}
+    .edu-card{
+    background:#fff;
+    border-radius:14px;
+    padding:1rem 1rem 1.2rem;
+    text-align:center;
+    height:100%;
+    box-shadow:0 6px 14px rgba(31,45,61,.06);
+    }
+    .edu-icon{
+    width:64px;height:64px;border-radius:16px;
+    background:#ecf2ff;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto .75rem;
+    }
+    .edu-icon i{font-size:28px;color:#3558ad;}
+    .edu-card h6{
+    font-weight:800;
+    color:#1f3a6d;
+    margin-bottom:.25rem;
+    }
+    .edu-card p{
+    font-size:.92rem;
+    color:#6b7280;
+    margin:0;
+    }
+
+    /* ===== GCC v2 — lebih rapi & menarik ===== */
+    /* sudah sinkron ke brand oranye */
+    .btn-primary{background:var(--grafika-orange)!important;border-color:var(--grafika-orange)!important}
+    .btn-primary:hover{background:#E86A00!important;border-color:#E86A00!important}
+    .btn-primary:focus{box-shadow:0 0 0 .2rem rgba(255,122,0,.35)!important}
+
+    .gcc-wrap{margin-top:1.75rem}
+    .gcc-card{
+    position:relative;overflow:hidden;
+    background:linear-gradient(180deg,#f5f8ff 0%,#fbfcff 100%);
+    border:1px solid #e7ecff;border-radius:28px;padding:1.25rem;
+    }
+    .gcc-card::after{
+    content:"";position:absolute;right:-80px;top:-80px;width:220px;height:220px;
+    background:radial-gradient(closest-side,rgba(79,114,223,.12),rgba(79,114,223,0));
+    pointer-events:none;
+    }
+    .gcc-inner{display:grid;grid-template-columns:260px 1fr;gap:1.25rem;align-items:center}
+    .gcc-logo{color:#1f458a;text-align:center}
+    .gcc-logo .big{font-weight:900;font-size:120px;line-height:.85;letter-spacing:2px}
+    .gcc-logo .sub{margin-top:.35rem;font-weight:800;letter-spacing:4px;line-height:1.15}
+
+    .gcc-pane{
+    position:relative;background:#fff;border:1px solid #e9eeff;border-radius:18px;
+    padding:1.25rem 1.25rem 1.25rem 3.25rem;
+    box-shadow:0 10px 24px rgba(31,45,61,.08);
+    }
+    .gcc-pane::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:40px;
+    border-radius:18px 0 0 18px;background:linear-gradient(180deg,#1f458a,#315db8);
+    }
+    .gcc-kicker{
+    display:inline-flex;align-items:center;gap:.45rem;
+    padding:.25rem .6rem;border-radius:999px;background:#edf2ff;color:#3151a3;
+    font-weight:800;font-size:.8rem;margin-bottom:.35rem;
+    }
+    .gcc-title{margin:0 0 .35rem;font-weight:900;color:#163a6a;font-size:1.15rem}
+    .gcc-text{color:#2f4a7a}
+    .gcc-feat{margin:.6rem 0 1rem;display:flex;flex-wrap:wrap;gap:.5rem}
+    .gcc-chip{
+    display:inline-flex;align-items:center;gap:.35rem;
+    padding:.35rem .6rem;border-radius:10px;background:#f3f6ff;
+    border:1px solid #e6ecff;color:#2c4aa6;font-weight:700;font-size:.85rem;
+    }
+    .gcc-actions .btn{min-width:340px}
+
+    @media (max-width:992px){
+    .gcc-inner{grid-template-columns:1fr}
+    .gcc-logo .big{font-size:86px}
+    .gcc-pane{padding-left:1.25rem}
+    .gcc-pane::before{display:none}
+    .gcc-actions .btn{width:100%;min-width:0}
+    }
+
+    /* ===== Footer Hero (foto SMK + overlay) ===== */
+    .footer-hero{
+    position: relative;
+    color:#fff;
+    margin-top:1.75rem;
+    background:url("image/smk_grafika_yayasan_lektur_cover.jpeg") center/cover no-repeat;
+    overflow:hidden;
+    }
+    .footer-hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(0deg,rgba(18,53,112,.82),rgba(18,53,112,.76));
+    }
+    .footer-inner{ position:relative; z-index:1; padding:2rem 1.25rem; }
+    .footer-heading{
+    font-weight:800; letter-spacing:.2px; margin-bottom:.8rem;
+    }
+    .footer-text, .footer-link{ color:#e9f1ff; }
+    .footer-text{ margin-bottom:.35rem; opacity:.95; }
+    .footer-link{ display:inline-block; margin:.2rem 0; text-decoration:none; }
+    .footer-link:hover{ text-decoration:underline; color:#fff; }
+
+    .footer-divider{
+    border-top:1px solid rgba(255,255,255,.25);
+    margin:1rem 0 0;
+    }
+    .footer-bottom{
+    position:relative; z-index:1;
+    display:flex; gap:.75rem; justify-content:space-between; align-items:center;
+    padding: .75rem 1.25rem 1.2rem;
+    color:#e5eeff; font-size:.92rem;
+    }
+    .footer-logo{
+    background:#fff; border-radius:12px; padding:.6rem .8rem;
+    display:inline-flex; align-items:center; gap:.5rem;
+    color:#173a6b; font-weight:800;
+    }
+    .footer-badge{
+    background:#fff; border-radius:10px; padding:.5rem .65rem; color:#173a6b; font-weight:800;
+    }
+
+    @media (max-width: 992px){
+    .footer-inner{ padding:1.4rem 1rem; }
+    .footer-bottom{ flex-direction:column; align-items:flex-start; gap:.4rem; }
+    }
+
+  </style>
+</head>
+
+<body id="page-top">
+  <div id="wrapper" class="d-flex flex-row-reverse"> <!-- CHANGED -->
+
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+          
+          <!-- LOGO GCC -->
+          <div class="d-flex align-items-center mr-3" style="margin-left: 5px;">
+            <img src="image/logoGrafikaCareerCenter-putih.png" alt="GCC Logo" style="height:60px;">
+          </div>
+
+          <!-- Bagian kanan topbar -->
+          <ul class="navbar-nav ml-auto align-items-center">
+
+            <!-- Search Bar -->
+            <form class="form-inline d-flex align-items-center mr-3" id="searchBar">
+              <div class="input-group shadow-sm" style="border-radius: 40px; overflow: hidden;">
+                <input type="text" 
+                      class="form-control" 
+                      placeholder="Search..."
+                      style="border: none; background: #ffffff;">
+                <div class="input-group-append">
+                  <button class="btn" type="button" style="background:#ffffff; border:none;">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <!-- Profile Icon -->
+            <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user-circle" style="font-size: 28px; color: #ffffff;"></i>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                    aria-labelledby="userDropdown">
+
+                    <!-- Home -->
+                    <a class="dropdown-item" href="dashboard-siswa.html">Home</a>
+                    <div class="dropdown-divider"></div>
+
+                    <!-- Profile -->
+                    <a class="dropdown-item" href="profile.html">Profile</a>
+                    <div class="dropdown-divider"></div>
+
+                    <!-- Contact Us Section -->
+                    <h6 class="dropdown-header">Contact Us</h6>
+
+                    <!-- Pengajuan Surat -->
+                    <a class="dropdown-item" href="suratapplypkl.html">Pengajuan Surat Pengantar PKL</a>
+                    <a class="dropdown-item" href="suratperizinanpkl.html">Pengajuan Surat Izin PKL</a>
+                    <div class="dropdown-divider"></div>
+
+                    <!-- Laporan Mingguan -->
+                    <a class="dropdown-item" href="">Laporan Mingguan</a>
+                    <div class="dropdown-divider"></div>
+
+                    <!-- Logout -->
+                    <a class="dropdown-item" href="home.html">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                    </a>
+
+                </div>
+          </ul>
+        </nav>
+
+        <div class="container-fluid">
+          <div class="hero-announcement mb-5">
+            <div class="hero-overlay"></div>
+            <div class="hero-inner">
+              <div class="hero-rail" aria-label="Pengumuman selector">
+                <button class="rail-dot active" data-slide="0" aria-label="Pengumuman 1">1</button>
+                <button class="rail-dot" data-slide="1" aria-label="Pengumuman 2">2</button>
+                <button class="rail-dot" data-slide="2" aria-label="Pengumuman 3">3</button>
+              </div>
+              <div class="hero-copy" id="heroCopy">
+                <span class="hero-tag" id="heroTag">Pengumuman Penting</span>
+                <div class="headline" id="headline">
+                  <div class="line">Pendaftaran PKL SMK Grafika Yayasan Lekktur Telah Dibuka!</div>
+                </div>
+                <a href="#" class="btn btn-light btn-sm d-none" id="heroCta"><i class="fas fa-external-link-alt"></i> Klik disini</a>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 jobs-header">
+                <h4>Lowongan PKL</h4>
+        </div>
+
+        <div class="jobs-grid mb-4">
+
+            <a href="lowongan-copywriter.html" class="job-card" aria-label="Copywriter - Lebak Bulus">
+                <div class="job-thumb" style="background-image:url('image/lowongan/abbey.png'); background-size:contain; background-color:#fff;"></div>
+                <div class="job-body">
+                <div class="job-title">Copywriter</div>
+                <div class="job-location">Lebak Bulus</div>
+                <span class="badge badge-primary job-badge">Sisa 5/10</span>
+                </div>
+            </a>
+
+            <a href="lowongan-3d-designer.html" class="job-card" aria-label="3D Designer - Blok M">
+                <div class="job-thumb" style="background-image:url('image/lowongan/office_room.jpg');"></div>
+                <div class="job-body">
+                <div class="job-title">3D Designer</div>
+                <div class="job-location">Blok M</div>
+                <span class="badge badge-primary job-badge">Sisa 1/3</span>
+                </div>
+            </a>
+
+            <a href="lowongan-percetakan.html" class="job-card" aria-label="Percetakan - Pondok Labu">
+                <div class="job-thumb" style="background-image:url('image/lowongan/percetakan.jpg');"></div>
+                <div class="job-body">
+                <div class="job-title">Percetakan</div>
+                <div class="job-location">Pondok Labu</div>
+                <span class="badge badge-primary job-badge">Sisa 4/5</span>
+                </div>
+            </a>
+
+            <a href="lowongan-creative-designer.html" class="job-card" aria-label="Creative Designer">
+                <div class="job-thumb" style="background-image:url('image/lowongan/abbey.png'); background-size:contain; background-color:#fff;"></div>
+                <div class="job-body">
+                <div class="job-title">Creative Designer</div>
+                <div class="job-location">Ampera Raya</div>
+                <span class="badge badge-primary job-badge">Sisa 0/2</span>
+                </div>
+            </a>
+
+            <a href="lowongan-uiux-designer.html" class="job-card" aria-label="UI/UX Designer">
+                <div class="job-thumb" style="background-image:url('image/lowongan/rimb.png'); background-size:contain; background-color:#fff;"></div>
+                <div class="job-body">
+                <div class="job-title">UI/UX Designer</div>
+                <div class="job-location">Fatmawati</div>
+                <span class="badge badge-primary job-badge">Sisa 1/3</span>
+                </div>
+            </a>
+
+            <a href="lowongan-asisten-desainer.html" class="job-card" aria-label="Asisten Desainer">
+                <div class="job-thumb" style="background-image:url('image/lowongan/asisten.jpg');"></div>
+                <div class="job-body">
+                <div class="job-title">Asisten Desainer</div>
+                <div class="job-location">Kemang Selatan</div>
+                <span class="badge badge-primary job-badge">Sisa 4/5</span>
+                </div>
+            </a>
+            </div>
+            <section class="edu-wrap">
+            <div class="edu-surface">
+                <h3 class="text-center mb-4 edu-title">Nilai-Nilai Penting saat PKL</h3>
+
+                <div class="row edu-grid">
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="edu-card h-100">
+                    <div class="edu-icon"><i class="fas fa-clock"></i></div>
+                    <h6>Disiplin</h6>
+                    <p>Datang tepat waktu, taat aturan, dan menghargai jadwal pekerjaan.</p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="edu-card h-100">
+                    <div class="edu-icon"><i class="fas fa-clipboard-check"></i></div>
+                    <h6>Tanggung Jawab</h6>
+                    <p>Menuntaskan tugas dengan sungguh-sungguh dan menyelesaikan yang sudah dimulai.</p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="edu-card h-100">
+                    <div class="edu-icon"><i class="fas fa-user-check"></i></div>
+                    <h6>Kejujuran</h6>
+                    <p>Jujur pada proses, hasil, dan berani mengakui kesalahan.</p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="edu-card h-100">
+                    <div class="edu-icon"><i class="fas fa-users"></i></div>
+                    <h6>Kerja Sama</h6>
+                    <p>Mampu bekerja dalam tim, menghargai pendapat orang lain, dan saling membantu.</p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="edu-card h-100">
+                    <div class="edu-icon"><i class="fas fa-lightbulb"></i></div>
+                    <h6>Inisiatif</h6>
+                    <p>Aktif bertanya, menawarkan bantuan, dan memberi usulan yang membangun.</p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="edu-card h-100">
+                    <div class="edu-icon"><i class="fas fa-user-tie"></i></div>
+                    <h6>Sikap Profesional</h6>
+                    <p>Sopan, menghormati aturan & privasi, serta menjaga etika kerja.</p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="edu-card h-100">
+                    <div class="edu-icon"><i class="fas fa-sync-alt"></i></div>
+                    <h6>Adaptif</h6>
+                    <p>Mudah menyesuaikan diri dengan budaya, alat, dan perubahan tugas.</p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="edu-card h-100">
+                    <div class="edu-icon"><i class="fas fa-book-open"></i></div>
+                    <h6>Semangat Belajar</h6>
+                    <p>Menjadikan PKL sebagai kesempatan bertumbuh & memperkaya portofolio.</p>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </section>
+
+            <section class="gcc-wrap">
+            <div class="gcc-card">
+                <div class="gcc-inner">
+                <div class="gcc-logo">
+                    <div class="big">GCC</div>
+                    <div class="sub">GRAFIKA<br>CAREER<br>CENTER</div>
+                </div>
+
+                <div class="gcc-pane">
+                    <span class="gcc-kicker"><i class="fas fa-graduation-cap"></i> Grafika Career Center</span>
+                    <p class="gcc-text mb-2">
+                    Platform pengembangan karier untuk siswa-siswi SMK Grafika Yayasan Lektur dalam
+                    mempersiapkan dan mencari peluang <b>magang</b> sesuai minat & kompetensi.
+                    </p>
+                    <p class="gcc-text mb-0">
+                    Menjadi jembatan antara siswa dan dunia industri dengan proses yang mudah & terpantau.
+                    </p>
+
+                    <div class="gcc-feat">
+                    <span class="gcc-chip"><i class="fas fa-search"></i> Pencarian</span>
+                    <span class="gcc-chip"><i class="fas fa-file-signature"></i> Pendaftaran</span>
+                    <span class="gcc-chip"><i class="fas fa-tasks"></i> Pemantauan</span>
+                    <span class="gcc-chip"><i class="fas fa-briefcase"></i> Portofolio</span>
+                    </div>
+
+                    <div class="gcc-actions">
+                    <a class="btn btn-primary" target="_blank"
+                        href="docs/Handbook-Grafika-Career-Center.pdf">
+                        <i class="fas fa-download mr-1"></i>
+                        Download Handbook Grafika Career Center
+                    </a>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </section>
+
+        </div></div><footer class="footer-hero">
+    <div class="footer-inner container-fluid">
+        <div class="row">
+        <div class="col-12 col-md-4 mb-4 mb-md-0">
+            <h6 class="footer-heading">Helpdesk</h6>
+            <p class="footer-text mb-2 font-weight-bold">SMK GRAFIKA YAYASAN LEKTUR</p>
+            <p class="footer-text">JL. Grafika No.58 3, RT.3/RW.2,<br>Lebak Bulus, Kec. Cilandak,<br>Kota Jakarta Selatan, DKI Jakarta 12440</p>
+            <p class="footer-text mb-1"><b>Buka</b> : Senin – Jumat 06.30 – 15.00 WIB<br>Sabtu & Hari Libur tutup</p>
+            <p class="footer-text mb-0"><b>Telepon</b> : <a class="footer-link" href="tel:+62217513546">(021) 7513546</a></p>
+        </div>
+
+        <div class="col-12 col-md-4 mb-4 mb-md-0">
+            <h6 class="footer-heading">Contact</h6>
+            <p class="footer-text mb-1"><b>Phone</b><br>
+            <a class="footer-link" href="tel:+62217513546">(021) 7513546</a></p>
+            <p class="footer-text mb-1"><b>Email</b><br>
+            <a class="footer-link" href="mailto:career@grafika.sch.id">career@grafika.sch.id</a></p>
+            <p class="footer-text mb-0"><b>WhatsApp (Message Only)</b><br>
+            <a class="footer-link" href="https://wa.me/6281234567890" target="_blank">0812-3456-7890</a></p>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <h6 class="footer-heading">Quick Links</h6>
+            <a class="footer-link d-block" href="#lowongan">Lowongan PKL</a>
+            <a class="footer-link d-block" href="suratapplypkl.html">Surat Apply PKL</a>
+            <a class="footer-link d-block" href="dailyreport.html">Daily Report</a>
+            <a class="footer-link d-block" href="docs/Handbook-Grafika-Career-Center.pdf" target="_blank">Handbook GCC</a>
+            <a class="footer-link d-block" href="profile.html">Profil</a>
+        </div>
+        </div>
+
+        <hr class="footer-divider">
+
+        <div class="footer-bottom">
+        <div class="footer-logo">
+            <img src="img/undraw_profile.svg" alt="" style="width:26px;height:26px;border-radius:6px">
+            Grafika Career Center
+        </div>
+        <div class="footer-badge">
+            ★★★★★ Online Learning
+        </div>
+        <div class="text-right ml-auto">
+            © 2025 SMK Grafika Yayasan Lektur — All rights reserved
+        </div>
+        </div>
+    </div>
+    </footer>
+    </div></div><a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
+
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document"><div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+      <div class="modal-footer"><button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+        <a class="btn btn-primary" href="login.html">Logout</a></div>
+    </div></div>
+  </div>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="js/sb-admin-2.min.js"></script>
+
+  <script>
+    const slides = [
+      { tag:"Pengumuman Penting", lines:["PENDAFTARAN PKL","SISWA SMK TELAH","DIBUKA"], cta:null },
+      { tag:"Periode Praktik Kerja Lapangan", lines:["1 AGUSTUS HINGGA","1 DESEMBER 2025"], cta:null },
+      { tag:"Tutorial", lines:["HANDBOOK GRAFIKA","CAREER CENTER"], cta:{ href:"#", label:"Klik disini"} }
+    ];
+    const dots = document.querySelectorAll(".rail-dot");
+    const copy = document.getElementById("heroCopy");
+    const tagEl = document.getElementById("heroTag");
+    const headlineEl = document.getElementById("headline");
+    const ctaEl = document.getElementById("heroCta");
+    dots.forEach((d,i)=>{ d.setAttribute("role","tab"); d.setAttribute("tabindex", i===0?"0":"-1"); });
+
+    function renderSlide(idx){
+      dots.forEach((d,i)=>{
+        const on = i===idx;
+        d.classList.toggle("active", on);
+        d.setAttribute("aria-selected", on? "true":"false");
+        d.setAttribute("tabindex", on? "0":"-1");
+      });
+      copy.classList.add("is-fading");
+      setTimeout(()=>{
+        const s = slides[idx];
+        tagEl.textContent = s.tag;
+        headlineEl.innerHTML = s.lines.map(t=>`<div class="line">${t}</div>`).join("");
+        if(s.cta){ ctaEl.classList.remove("d-none"); ctaEl.href=s.cta.href||"#"; ctaEl.innerHTML=`<i class="fas fa-external-link-alt"></i> ${s.cta.label||"Klik disini"}`; }
+        else{ ctaEl.classList.add("d-none"); }
+        copy.classList.remove("is-fading");
+      },180);
+    }
+    dots.forEach(d=>{
+      d.addEventListener("click",e=>renderSlide(+e.currentTarget.dataset.slide));
+      d.addEventListener("keydown",e=>{
+        if(e.key==="Enter"||e.key===" "){ e.preventDefault(); renderSlide(+e.currentTarget.dataset.slide); }
+      });
+    });
+    renderSlide(0);
+  </script>
+
+</script>
+</body>
+</html>

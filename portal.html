@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grafika Career Center Portal</title>
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: url('image/smk_grafika_yayasan_lektur_cover.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      height: 100vh;
+      width: 100%;
+    }
+
+    /* --- LAYER GELAP + BLUR --- */
+    .container {
+      position: fixed;
+      inset: 0; 
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(4px);
+      
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* --- CARD UTAMA --- */
+    .card {
+      background: white;
+      width: 90%;
+      max-width: 450px;
+      border-radius: 18px;
+      padding: 40px 35px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* LOGO */
+    .logo {
+      width: 180px;
+      margin: 0 auto 25px auto;
+      display: block;
+    }
+
+    .card h2 {
+      font-size: 22px;
+      color: #0a347e;
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .card h3 {
+      font-size: 18px;
+      color: #173a63;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+
+    .portal-btn {
+      background-color: #f5a623;
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 15px;
+      transition: 0.25s;
+      width: 100%;
+    }
+
+    .portal-btn:hover {
+      background-color: #e39317;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      margin-top: 10px;
+      color: #666;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="card">
+
+      <!-- LOGO GCC -->
+      <img src="image/logoGrafikaCareerCenter.png" alt="GCC Logo" class="logo">
+
+      <h2>Welcome to</h2>
+      <h3>Grafika Career Center</h3>
+
+      <button class="portal-btn" onclick="window.location.href='login.html'">
+        Siswa / Student
+      </button>
+
+      <button class="portal-btn" onclick="window.location.href='login-guru.html'">
+        Guru / Teacher
+      </button>
+
+      <div class="footer">© 2025 Grafika Career Center</div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
